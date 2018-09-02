@@ -1,0 +1,16 @@
+{
+  "db": {
+    "name": "db",
+    "connector": "memory"
+  },
+  "localpg": {
+    "host": "localhost",
+    "port": 5432,
+    "url": "",
+    "database": "xcpilots",
+    "password": "hstnkayvan",
+    "name": "localpg",
+    "user": "postgres",
+    "connector": "postgresql"
+  }
+}

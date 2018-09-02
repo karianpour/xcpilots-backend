@@ -1,0 +1,60 @@
+
+
+sudo npm install -g loopback-cli
+
+it gave me error, I searched the error and there I found two options aded in the end of the to give the root access.
+
+the command did not work so set an alias as follow:
+
+alias lb=/home/kayvan/bin/node-v8.11.3-linux-x64/bin/lb
+
+to test if the loopback is installed
+
+lb -v
+
+
+to create the project run the bellow command and follow the instruction, during the process it asks about the project type, I chose the one with "user auth", actually the first.
+
+lb
+
+
+then 
+
+lb datasource
+
+then lb model to create models, I used type common
+
+
+lb model
+
+in server/component-config.json
+
+{
+  "loopback-component-explorer": {
+    "mountPath": "/explorer",
+    "generateOperationScopedModels": true
+  },
+  "loopback3-xtotalcount": {
+    "pattern": ["*.find"]
+  }
+}
+
+
+
+middleware.json
+
+        "maxAge": 86400,
+        "exposedHeaders": "X-Total-Count"
+
+
+
+Now the react-admin
+
+npm install -g create-react-app
+create-react-app xcpilots-backoffice
+cd xcpilots-backoffice/
+npm add react-admin
+npm add aor-loopback
+npm start
+
+

@@ -1,0 +1,38 @@
+{
+  "name": "news",
+  "plural": "news",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "required": true,
+      "id": true
+    },
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "required": false
+    },
+    "body": {
+      "type": "string",
+      "required": false
+    }
+  },
+  "mixins": {
+    "TimeStamp" : {
+      "createdAt" : "created_at",
+      "updatedAt" : "updated_at"
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
