@@ -4,6 +4,8 @@
     "generateOperationScopedModels": true
   },
   "loopback3-xtotalcount": {
-    "pattern": ["*.find"]
+    "pattern": [
+      "*.find"
+    ]
   }
 }

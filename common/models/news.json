@@ -6,11 +6,17 @@
   "options": {
     "validateUpsert": true
   },
+  "mixins": {
+    "TimeStamp": {
+      "createdAt": "created_at",
+      "updatedAt": "updated_at"
+    }
+  },
   "properties": {
     "id": {
       "type": "string",
-      "required": true,
-      "id": true
+      "id": true,
+      "required": true
     },
     "title": {
       "type": "string",
@@ -23,12 +29,6 @@
     "body": {
       "type": "string",
       "required": false
-    }
-  },
-  "mixins": {
-    "TimeStamp" : {
-      "createdAt" : "created_at",
-      "updatedAt" : "updated_at"
     }
   },
   "validations": [],

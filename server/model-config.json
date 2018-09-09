@@ -37,7 +37,15 @@
     "public": false
   },
   "news": {
-    "dataSource": "localpg",
+    "dataSource": "pg-db",
+    "public": true
+  },
+  "container": {
+    "dataSource": "storage",
+    "public": false
+  },
+  "asset": {
+    "dataSource": "pg-db",
     "public": true
   }
 }

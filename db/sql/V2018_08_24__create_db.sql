@@ -11,3 +11,14 @@ create table news (
 	expiration timestamp
 );
 
+create table asset (
+  id bigserial primary key,
+  name text,
+  filename text,
+  type text,
+  size int,
+  url text,
+  created_at timestamp not null,
+  updated_at timestamp
+);
+
