@@ -29,6 +29,10 @@
     "body": {
       "type": "string",
       "required": false
+    },
+    "pictures": {
+      "type": "json",
+      "required": false
     }
   },
   "validations": [],

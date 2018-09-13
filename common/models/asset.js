@@ -3,7 +3,7 @@
 const fs = require('fs');
 const formidable = require('formidable');
 
-const BUCKET = 'test';
+const BUCKET = 'news';
 
 module.exports = function(Asset) {
   Asset.upload = function(req, res, body, cb) {
@@ -33,6 +33,11 @@ module.exports = function(Asset) {
           return reject(error);
         }
 
+        if (!fileObj.files || !fileObj.files.file) {
+          resolve();
+          return;
+        }
+
         const fileInfo = fileObj.files.file[0];
 
         resolve(fileInfo);
@@ -49,12 +54,16 @@ module.exports = function(Asset) {
 
     Promise.all([filePromise, fieldsPromise])
       .then(([fileInfo, fields]) => {
+        if (!fileInfo) {
+          throw new Error('bad request!');
+        }
         // S3 file url
         const url =
           (fileInfo.providerResponse && fileInfo.providerResponse.location);
         Asset.create(Object.assign({
           filename: fileInfo.name,
-          url,
+          title: fileInfo.originalFilename,
+          src: `/api/containers/${BUCKET}/download/${fileInfo.name}`,
           type: fileInfo.type,
           size: fileInfo.size,
         }, fields), (error, reply) => {

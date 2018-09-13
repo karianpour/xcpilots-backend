@@ -42,7 +42,7 @@
   },
   "container": {
     "dataSource": "storage",
-    "public": false
+    "public": true
   },
   "asset": {
     "dataSource": "pg-db",

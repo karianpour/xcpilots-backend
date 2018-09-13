@@ -5,7 +5,7 @@ create table news (
 	title text collate "fa_IR",
 	description text collate "fa_IR",
 	body text collate "fa_IR",
-	image_url text collate "fa_IR",
+	pictures json,
 	created_at timestamp not null,
 	updated_at timestamp,
 	expiration timestamp
@@ -13,11 +13,11 @@ create table news (
 
 create table asset (
   id bigserial primary key,
-  name text,
+  title text,
   filename text,
   type text,
   size int,
-  url text,
+  src text,
   created_at timestamp not null,
   updated_at timestamp
 );
