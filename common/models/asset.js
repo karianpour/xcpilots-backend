@@ -58,12 +58,12 @@ module.exports = function(Asset) {
           throw new Error('bad request!');
         }
         // S3 file url
-        const url =
-          (fileInfo.providerResponse && fileInfo.providerResponse.location);
+        // const url =
+        //   (fileInfo.providerResponse && fileInfo.providerResponse.location);
         Asset.create(Object.assign({
           filename: fileInfo.name,
           title: fileInfo.originalFilename,
-          src: `/api/containers/${BUCKET}/download/${fileInfo.name}`,
+          src: `/__api/containers/${BUCKET}/download/${fileInfo.name}`,
           type: fileInfo.type,
           size: fileInfo.size,
         }, fields), (error, reply) => {

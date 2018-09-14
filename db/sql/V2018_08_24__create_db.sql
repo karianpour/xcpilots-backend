@@ -1,4 +1,7 @@
 create database xcpilots encoding = 'utf8' lc_collate = 'fa_IR.utf8' template template0;
+CREATE USER xcpilots WITH ENCRYPTED PASSWORD 'x30pi1ot';
+GRANT ALL PRIVILEGES ON DATABASE xcpilots TO xcpilots;
+
 
 create table news (
 	id uuid primary key,
