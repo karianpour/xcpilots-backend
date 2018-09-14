@@ -2,22 +2,5 @@
   "db": {
     "name": "db",
     "connector": "memory"
-  },
-  "pg-db": {
-    "host": "localhost",
-    "port": 5432,
-    "url": "",
-    "database": "xcpilots",
-    "password": "hstnkayvan",
-    "name": "pg-db",
-    "user": "postgres",
-    "connector": "postgresql"
-  },
-  "storage": {
-    "name": "storage",
-    "connector": "loopback-component-storage",
-    "provider": "filesystem",
-    "root": "./tmp/storage/",
-    "nameConflict": "makeUnique"
   }
 }
