@@ -33,7 +33,7 @@
       "required": false,
       "description": "Size in bytes of asset"
     },
-    "url": {
+    "src": {
       "type": "string",
       "required": false,
       "description": "Path url of asset"
