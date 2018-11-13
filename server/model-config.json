@@ -44,6 +44,10 @@
     "dataSource": "pg-db",
     "public": true
   },
+  "content": {
+    "dataSource": "pg-db",
+    "public": true
+  },
   "container": {
     "dataSource": "storage",
     "public": true
