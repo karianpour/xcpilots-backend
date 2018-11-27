@@ -37,6 +37,11 @@
       "type": "string",
       "required": false,
       "description": "Path url of asset"
+    },
+    "container": {
+      "type": "string",
+      "required": false,
+      "description": "Container of asset"
     }
   },
   "validations": [],

@@ -1,94 +1,93 @@
 'use strict';
 
 const fs = require('fs');
-const formidable = require('formidable');
+const {promisify} = require('util');
+const {createPromisified, findByIdPromisified, removeFilePromisified} = require('../k1_utils');
+
+const exists = promisify(fs.exists);
+const mkdir = promisify(fs.mkdir);
 
 const BUCKET = 'news';
 
 module.exports = function(Asset) {
-  Asset.upload = function(req, res, body, cb) {
+  Asset.upload = async function(req, res, body) {
+
+    if (!req.query || !req.query.container) {
+      throw new Error('container query is required!');
+    }
+
+    const {container} = req.query;
+    await createContainerIfNotExists(container);
+
+    const Container = Asset.app.models.Container;
+
+    const fileInfo = await saveFileToDisk(Container, container, req, res);
+    if (!fileInfo) {
+      throw new Error('bad request!');
+    }
+    const fields = {};// if you need the fields you have to change saveFileToDisk function to return them
+
+    const asset = {
+      ...fields,
+      filename: fileInfo.name,
+      title: fileInfo.originalFilename,
+      container: fileInfo.container,
+      src: `/__api/containers/${fileInfo.container}/download/${fileInfo.name}`,
+      type: fileInfo.type,
+      size: fileInfo.size,
+    };
+
+    return await createPromisified(Asset, asset);
+  };
+
+  async function createContainerIfNotExists(container){
     try {
       const {name: storageName, root: storageRoot} =
         Asset.app.dataSources.storage.settings;
 
       if (storageName === 'storage') {
-        const path = `${storageRoot}${BUCKET}/`;
+        const path = `${storageRoot}${container}/`;
 
-        if (!fs.existsSync(path)) {
-          fs.mkdirSync(path);
+        if (! await exists(path)) {
+          await mkdir(path);
         }
       }
     } catch (error) {
 
     }
+  } 
 
-    const Container = Asset.app.models.Container;
-    const form = new formidable.IncomingForm();
-
-    const filePromise = new Promise((resolve, reject) => {
+  function saveFileToDisk(Container, resource, req, res){
+    return new Promise((resolve, reject) => {
       Container.upload(req, res, {
-        container: BUCKET,
-      }, (error, fileObj) => {
-        if (error) {
-          return reject(error);
-        }
+        container: resource,
+        }, (error, fileObj) => {
+          if (error) {
+            return reject(error);
+          }
 
-        if (!fileObj.files || !fileObj.files.file) {
-          resolve();
-          return;
-        }
+          if (!fileObj.files || !fileObj.files.file) {
+            resolve();
+            return;
+          }
 
-        const fileInfo = fileObj.files.file[0];
+          //here we throw away the rest of the fields, if you need it catch it and use it
+          const fileInfo = fileObj.files.file[0];
 
-        resolve(fileInfo);
-      });
-    });
-
-    const fieldsPromise = new Promise((resolve, reject) => {
-      form.parse(req, function(error, fields, files) {
-        if (error) return reject(error);
-
-        resolve(fields);
-      });
-    });
-
-    Promise.all([filePromise, fieldsPromise])
-      .then(([fileInfo, fields]) => {
-        if (!fileInfo) {
-          throw new Error('bad request!');
-        }
-        // S3 file url
-        // const url =
-        //   (fileInfo.providerResponse && fileInfo.providerResponse.location);
-        Asset.create(Object.assign({
-          filename: fileInfo.name,
-          title: fileInfo.originalFilename,
-          src: `/__api/containers/${BUCKET}/download/${fileInfo.name}`,
-          type: fileInfo.type,
-          size: fileInfo.size,
-        }, fields), (error, reply) => {
-          if (error) return cb(error);
-          cb(null, reply);
+          resolve(fileInfo);
         });
-      })
-      .catch(error => cb(error));
-  };
+      }
+    );
+  }
 
-  Asset.observe('before delete', (context, next) => {
+  Asset.observe('before delete', async (ctx) => {
     const Container = Asset.app.models.Container;
 
-    Asset.findOne({where: context.where}, (error, asset) => {
-      if (error) return next(error);
+    const toBeDeleted = await findByIdPromisified(ctx.Model, ctx.where.id);
 
-      const filename = asset.filename;
-      Container.removeFile(BUCKET, filename, (error, reply) => {
-        if (error) {
-          return next(new Error(error));
-        }
-
-        next();
-      });
-    });
+    const filename = toBeDeleted.filename;
+    const container = toBeDeleted.container;
+    await removeFilePromisified(Container, container, filename);
   });
 
   Asset.remoteMethod('upload', {
