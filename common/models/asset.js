@@ -7,8 +7,6 @@ const {createPromisified, findByIdPromisified, removeFilePromisified} = require(
 const exists = promisify(fs.exists);
 const mkdir = promisify(fs.mkdir);
 
-const BUCKET = 'news';
-
 module.exports = function(Asset) {
   Asset.upload = async function(req, res, body) {
 
