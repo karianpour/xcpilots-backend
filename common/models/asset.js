@@ -28,11 +28,12 @@ module.exports = function(Asset) {
     if (!fileInfo) {
       throw new Error('bad request!');
     }
+    if(!fileInfo.path) fileInfo.path = path;
     const reformatted = await reformatImage(fileInfo);
     if(reformatted){
       fileInfo.name = reformatted.name;
-      fileInfo.type = fileInfo.type;
-      fileInfo.size = fileInfo.size;
+      fileInfo.type = reformatted.type;
+      fileInfo.size = reformatted.size;
     }
     const fields = {};// if you need the fields you have to change saveFileToDisk function to return them
 
