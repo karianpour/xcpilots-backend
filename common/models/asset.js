@@ -3,6 +3,7 @@
 const fs = require('fs');
 const {promisify} = require('util');
 const {createPromisified, findByIdPromisified, removeFilePromisified} = require('../k1_utils');
+const {reformatImage} = require('../image_transform');
 
 const exists = promisify(fs.exists);
 const mkdir = promisify(fs.mkdir);
@@ -14,14 +15,24 @@ module.exports = function(Asset) {
       throw new Error('container query is required!');
     }
 
+    const {root: storageRoot} = Asset.app.dataSources.storage.settings;
     const {container} = req.query;
-    await createContainerIfNotExists(container);
+
+    const path = `${storageRoot}${container}/`;
+
+    await createPathIfNotExists(path);
 
     const Container = Asset.app.models.Container;
 
     const fileInfo = await saveFileToDisk(Container, container, req, res);
     if (!fileInfo) {
       throw new Error('bad request!');
+    }
+    const reformatted = await reformatImage(fileInfo);
+    if(reformatted){
+      fileInfo.name = reformatted.name;
+      fileInfo.type = fileInfo.type;
+      fileInfo.size = fileInfo.size;
     }
     const fields = {};// if you need the fields you have to change saveFileToDisk function to return them
 
@@ -38,17 +49,10 @@ module.exports = function(Asset) {
     return await createPromisified(Asset, asset);
   };
 
-  async function createContainerIfNotExists(container){
+  async function createPathIfNotExists(path){
     try {
-      const {name: storageName, root: storageRoot} =
-        Asset.app.dataSources.storage.settings;
-
-      if (storageName === 'storage') {
-        const path = `${storageRoot}${container}/`;
-
-        if (! await exists(path)) {
-          await mkdir(path);
-        }
+      if (! await exists(path)) {
+        await mkdir(path);
       }
     } catch (error) {
 
