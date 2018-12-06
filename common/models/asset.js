@@ -29,11 +29,13 @@ module.exports = function(Asset) {
       throw new Error('bad request!');
     }
     if(!fileInfo.path) fileInfo.path = path;
-    const reformatted = await reformatImage(fileInfo);
-    if(reformatted){
-      fileInfo.name = reformatted.name;
-      fileInfo.type = reformatted.type;
-      fileInfo.size = reformatted.size;
+    if (fileInfo.type.startsWith('image')){
+      const reformatted = await reformatImage(fileInfo);
+      if(reformatted){
+        fileInfo.name = reformatted.name;
+        fileInfo.type = reformatted.type;
+        fileInfo.size = reformatted.size;
+      }
     }
     const fields = {};// if you need the fields you have to change saveFileToDisk function to return them
 
@@ -64,6 +66,7 @@ module.exports = function(Asset) {
     return new Promise((resolve, reject) => {
       Container.upload(req, res, {
         container: resource,
+        maxFileSize: 50 * 1024 * 1024
         }, (error, fileObj) => {
           if (error) {
             return reject(error);
