@@ -3,9 +3,11 @@
     "mountPath": "/explorer",
     "generateOperationScopedModels": true
   },
-  "loopback3-xtotalcount": {
+  "loopback-content-range": {
     "pattern": [
       "*.find"
-    ]
+    ],
+    "relatedModels": true
   }
 }
+
