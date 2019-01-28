@@ -55,5 +55,9 @@
   "asset": {
     "dataSource": "pg-db",
     "public": true
+  },
+  "flights": {
+    "dataSource": "pg-db",
+    "public": true
   }
 }

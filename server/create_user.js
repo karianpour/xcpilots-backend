@@ -6,3 +6,6 @@ ds.autoupdate(lbTables, function(er) {
   console.log('Loopback tables [' + lbTables + '] created in ', ds.adapter.name);
   ds.disconnect();
 });
+
+// run this file to create the tables
+// node ./server/create_user.js

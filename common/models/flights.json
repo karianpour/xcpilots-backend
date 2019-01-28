@@ -1,0 +1,83 @@
+{
+  "name": "flights",
+  "plural": "flights",
+  "base": "PersistedModel",
+  "idInjection": false,
+  "options": {
+    "validateUpsert": true
+  },
+  "properties": {
+    "id": {
+      "type": "string",
+      "id": true,
+      "required": true
+    },
+    "flight_id": {
+      "type": "string",
+      "required": true
+    },
+    "scope": {
+      "type": "string",
+      "required": true
+    },
+    "flight_date": {
+      "type": "string",
+      "required": true,
+      "postgresql": {
+        "dataType": "string"
+      }
+    },
+    "pilot_country": {
+      "type": "string",
+      "required": true
+    },
+    "pilot_name": {
+      "type": "string",
+      "required": true
+    },
+    "site_country": {
+      "type": "string",
+      "required": true
+    },
+    "site_name": {
+      "type": "string",
+      "required": true
+    },
+    "flight_type": {
+      "type": "string",
+      "required": true
+    },
+    "flight_length": {
+      "type": "number",
+      "required": true
+    },
+    "flight_length_unit": {
+      "type": "string",
+      "required": true
+    },
+    "flight_points": {
+      "type": "number",
+      "required": true
+    },
+    "flight_url": {
+      "type": "string",
+      "required": true
+    },
+    "glider": {
+      "type": "string",
+      "required": true
+    },
+    "glider_class": {
+      "type": "string",
+      "required": true
+    },
+    "created_at": {
+      "type": "date",
+      "required": true
+    }
+  },
+  "validations": [],
+  "relations": {},
+  "acls": [],
+  "methods": {}
+}
