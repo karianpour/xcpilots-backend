@@ -2,7 +2,8 @@ create table flights (
 	id uuid primary key,
   flight_id text collate "fa_IR" not null unique,
   scope text collate "fa_IR" not null,
-  flight_date date not null,
+  flight_date timestamp with time zone not null,
+  utcOffset int not null,
   pilot_country text collate "fa_IR" not null,
   pilot_name text collate "fa_IR" not null,
   site_country text collate "fa_IR" not null,
@@ -102,4 +103,63 @@ update flights f
   set glider = c.glider
 from flights_gliders_convert c
 where f.flight_id = c.flight_id;
+
+/*
+pg_dump -U postgres xcpilots -t flights > flights.sql
+
+scp flights.sql kayvan@xcpilots:~/
+
+psql -h 127.0.0.1 -W -U xcpilots xcpilots < flights.sql
+*/
+
+select row_to_json(t)
+from (select
+  (select array_to_json(array_agg(row_to_json(t))) as the_best_all
+  from (
+    select *
+    from flights
+    order by flight_points desc
+    limit 3
+  ) t),
+  (select array_to_json(array_agg(row_to_json(t))) as the_best_all_30
+  from (
+    select *
+    from flights
+    where flight_date > (now() - interval '30 days')
+    order by flight_points desc
+    limit 3
+  ) t),
+  (select array_to_json(array_agg(row_to_json(t))) as the_best_all_7
+  from (
+    select *
+    from flights
+    where flight_date > (now() - interval '7 days')
+    order by flight_points desc
+    limit 3
+  ) t),
+  (select array_to_json(array_agg(row_to_json(t))) as the_best_ir
+  from (
+    select *
+    from flights
+    where scope like 'IR%'
+    order by flight_points desc
+    limit 3
+  ) t),
+  (select array_to_json(array_agg(row_to_json(t))) as the_best_ir_30
+  from (
+    select *
+    from flights
+    where scope like 'IR%' and flight_date > (now() - interval '30 days')
+    order by flight_points desc
+    limit 3
+  ) t),
+  (select array_to_json(array_agg(row_to_json(t))) as the_best_ir_7
+  from (
+    select *
+    from flights
+    where scope like 'IR%' and flight_date > (now() - interval '7 days')
+    order by flight_points desc
+    limit 3
+  ) t)
+) t;
 

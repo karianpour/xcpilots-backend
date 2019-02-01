@@ -27,6 +27,10 @@
         "dataType": "string"
       }
     },
+    "utcOffset": {
+      "type": "number",
+      "required": true
+    },
     "pilot_country": {
       "type": "string",
       "required": true
