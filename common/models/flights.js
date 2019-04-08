@@ -60,7 +60,7 @@ module.exports = function(Flights) {
       from (
         select *
         from flights
-        where scope like 'IR%' and flight_date > (now() - interval '7 days')
+        where (scope like 'IR%' or site_country = 'IR') and flight_date > (now() - interval '7 days')
         order by flight_points desc
         limit 3
       ) t)
@@ -75,7 +75,7 @@ module.exports = function(Flights) {
     accepts: [
       // {arg: 'date', type: 'string', desciption: 'the current date.', http: {source:'query'}},
     ],
-    returns: {arg: 'data', type: 'string'},
+    returns: {arg: 'data', type: 'object'},
     desciption: 'With this method you can get the best flights done statisticts.',
     http: {
       verb: 'get',
