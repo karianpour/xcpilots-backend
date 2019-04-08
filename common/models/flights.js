@@ -44,7 +44,7 @@ module.exports = function(Flights) {
       from (
         select *
         from flights
-        where scope like 'IR%'
+        where (scope like 'IR%' or site_country = 'IR')
         order by flight_points desc
         limit 3
       ) t),
@@ -52,7 +52,7 @@ module.exports = function(Flights) {
       from (
         select *
         from flights
-        where scope like 'IR%' and flight_date > (now() - interval '30 days')
+        where (scope like 'IR%' or site_country = 'IR') and flight_date > (now() - interval '30 days')
         order by flight_points desc
         limit 3
       ) t),
