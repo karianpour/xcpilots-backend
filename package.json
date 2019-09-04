@@ -11,19 +11,19 @@
     "posttest": "npm run lint"
   },
   "dependencies": {
-    "compression": "^1.0.3",
-    "cors": "^2.5.2",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
     "gm": "^1.23.1",
-    "helmet": "^3.10.0",
-    "loopback": "^3.19.0",
-    "loopback-boot": "^2.6.5",
-    "loopback-component-explorer": "^6.0.0",
-    "loopback-component-storage": "^3.5.0",
+    "helmet": "^3.20.0",
+    "loopback": "^3.26.0",
+    "loopback-boot": "^2.28.0",
+    "loopback-component-explorer": "^6.4.0",
+    "loopback-component-storage": "^3.6.3",
     "loopback-connector-postgresql": "^2.9.0",
-    "loopback-content-range": "^1.0.0",
+    "loopback-content-range": "^1.1.1",
     "loopback-ds-timestamp-mixin": "^3.4.1",
     "serve-favicon": "^2.0.1",
-    "strong-error-handler": "^3.0.0"
+    "strong-error-handler": "^3.2.0"
   },
   "devDependencies": {
     "eslint": "^3.17.1",
