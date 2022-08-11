@@ -19,7 +19,7 @@
     "loopback-boot": "^2.28.0",
     "loopback-component-explorer": "^6.5.1",
     "loopback-component-storage": "^3.7.0",
-    "loopback-connector-postgresql": "^2.9.0",
+    "loopback-connector-postgresql": "^5.5.1",
     "loopback-content-range": "^1.1.1",
     "loopback-ds-timestamp-mixin": "^3.4.1",
     "serve-favicon": "^2.0.1",
